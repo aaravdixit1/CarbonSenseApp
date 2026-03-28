@@ -2,6 +2,7 @@
 
 export const SCHEMA_VERSION = '1.0';
 export const STORAGE_KEY = 'carbonsense_session';
+export const DAILY_LOG_KEY = 'carbonsense_daily_logs';
 export const MAX_SCALE = 10;      // tCO₂e — upper bound of FootprintMeter bar
 export const PARIS_TARGET = 2.3;  // tCO₂e/year
 export const GLOBAL_AVG = 4.7;    // tCO₂e/year
@@ -75,4 +76,21 @@ export interface StoredSession {
   footprint_result: FootprintResult;
   actions: Action[];
   created_at: string; // ISO 8601
+}
+
+// ── Daily Tracking ────────────────────────────────────────────────────────────
+
+export interface DailyHabit {
+  id: string;
+  label: string;
+  description: string;
+  category: 'transport' | 'food' | 'home_energy' | 'shopping';
+  /** estimated kg CO₂e saved vs baseline when checked */
+  savings_kg: number;
+}
+
+export interface DailyLog {
+  date: string;           // YYYY-MM-DD
+  completed_habit_ids: string[];
+  note?: string;
 }

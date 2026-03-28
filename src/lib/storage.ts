@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StoredSession, SCHEMA_VERSION, STORAGE_KEY } from '../types/index';
+import { StoredSession, SCHEMA_VERSION, STORAGE_KEY, DAILY_LOG_KEY, DailyLog } from '../types/index';
 
 /**
  * Pure function — serializes a StoredSession to a JSON string.
@@ -65,4 +65,37 @@ export async function loadSession(): Promise<StoredSession | null> {
  */
 export async function clearSession(): Promise<void> {
   await AsyncStorage.removeItem(STORAGE_KEY);
+}
+
+// ── Daily Log Storage ─────────────────────────────────────────────────────────
+
+export async function loadDailyLogs(): Promise<DailyLog[]> {
+  try {
+    const raw = await AsyncStorage.getItem(DAILY_LOG_KEY);
+    if (!raw) return [];
+    return JSON.parse(raw) as DailyLog[];
+  } catch {
+    return [];
+  }
+}
+
+export async function saveDailyLog(log: DailyLog): Promise<void> {
+  try {
+    const existing = await loadDailyLogs();
+    const idx = existing.findIndex((l) => l.date === log.date);
+    if (idx >= 0) {
+      existing[idx] = log;
+    } else {
+      existing.push(log);
+    }
+    await AsyncStorage.setItem(DAILY_LOG_KEY, JSON.stringify(existing));
+  } catch {
+    // silently swallow
+  }
+}
+
+export async function getTodayLog(): Promise<DailyLog | null> {
+  const today = new Date().toISOString().split('T')[0];
+  const logs = await loadDailyLogs();
+  return logs.find((l) => l.date === today) ?? null;
 }

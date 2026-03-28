@@ -20,6 +20,7 @@ from backend.controllers.profile import router as profile_router
 from backend.controllers.analyze import router as analyze_router
 from backend.controllers.results import router as results_router
 from backend.controllers.goals import router as goals_router
+from backend.controllers.daily_logs import router as daily_logs_router
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ app.include_router(profile_router)
 app.include_router(analyze_router)
 app.include_router(results_router)
 app.include_router(goals_router)
+app.include_router(daily_logs_router)
 
 # CORS — allow all origins for development
 app.add_middleware(

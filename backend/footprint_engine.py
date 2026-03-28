@@ -35,6 +35,15 @@ def compute_footprint(profile: HabitProfile, db_version: str) -> FootprintResult
         food_substituted = True
         factors_used[fallback_key] = food_tco2e
 
+    # Apply local/unprocessed food reduction
+    local_reduction = min(
+        (profile.local_food_pct / 10) * factors["food.local_reduction_per_10pct"],
+        factors["food.local_max_reduction"],
+    )
+    food_tco2e = food_tco2e * (1.0 - local_reduction)
+    if local_reduction > 0:
+        factors_used["food.local_reduction_per_10pct"] = factors["food.local_reduction_per_10pct"]
+
     # ── Transport ─────────────────────────────────────────────────────────────
     transport_substituted = False
     transport_tco2e = 0.0
@@ -42,8 +51,21 @@ def compute_footprint(profile: HabitProfile, db_version: str) -> FootprintResult
     if profile.transport_method == "car":
         car_key = f"transport.annual.car.{profile.car_type}"
         if car_key in factors:
-            transport_tco2e = factors[car_key]
-            factors_used[car_key] = transport_tco2e
+            base_tco2e = factors[car_key]
+            factors_used[car_key] = base_tco2e
+
+            # Scale by actual weekly km vs baseline
+            weekly_km_baseline = factors["transport.weekly_km_baseline"]
+            km_multiplier = (profile.weekly_km * 52) / (weekly_km_baseline * 52) if weekly_km_baseline > 0 else 1.0
+            factors_used["transport.weekly_km_baseline"] = weekly_km_baseline
+
+            # Apply fuel economy adjustment (0=worst 1.4×, 50=neutral 1.0×, 100=best 0.5×)
+            worst = factors["transport.fuel_economy.worst_multiplier"]
+            best = factors["transport.fuel_economy.best_multiplier"]
+            economy_multiplier = worst + (best - worst) * (profile.fuel_economy / 100.0)
+            factors_used["transport.fuel_economy.worst_multiplier"] = worst
+
+            transport_tco2e = base_tco2e * km_multiplier * economy_multiplier
         else:
             fallback_key = "transport.global_average"
             transport_tco2e = factors[fallback_key]
@@ -102,6 +124,14 @@ def compute_footprint(profile: HabitProfile, db_version: str) -> FootprintResult
         shopping_tco2e = factors[fallback_key]
         shopping_substituted = True
         factors_used[fallback_key] = shopping_tco2e
+
+    # ── Waste adjustment (trash_vs_neighbors) ────────────────────────────────
+    # 50 = neutral, 0 = saves 0.15 tCO2e, 100 = adds 0.15 tCO2e
+    max_delta = factors["waste.max_delta_tco2e"]
+    waste_delta = ((profile.trash_vs_neighbors - 50.0) / 50.0) * max_delta
+    shopping_tco2e = max(0.0, shopping_tco2e + waste_delta)
+    if waste_delta != 0:
+        factors_used["waste.max_delta_tco2e"] = max_delta
 
     # ── Totals and percentages ────────────────────────────────────────────────
     total = food_tco2e + transport_tco2e + home_tco2e + shopping_tco2e

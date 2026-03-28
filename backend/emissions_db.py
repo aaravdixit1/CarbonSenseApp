@@ -114,6 +114,30 @@ _FACTORS_V1: dict[str, float] = {
 
     # Global average shopping footprint (tCO2e/year) — used for substitution
     "shopping.global_average": 0.7,
+
+    # ── Weekly km adjustment factors ─────────────────────────────────────────
+    # Used to scale transport footprint based on actual weekly distance.
+    # Base assumption in annual multipliers: ~15,000 km/year (~288 km/week).
+    # Adjustment = (weekly_km * 52) / 15000 — applied as a multiplier.
+    "transport.weekly_km_baseline": 288.0,   # km/week baseline
+
+    # ── Fuel economy adjustment ───────────────────────────────────────────────
+    # fuel_economy 0–100: 0 = worst (old gasoline), 100 = best (EV/efficient)
+    # Maps to a multiplier: 0 → 1.4×, 50 → 1.0×, 100 → 0.5×
+    "transport.fuel_economy.worst_multiplier": 1.4,
+    "transport.fuel_economy.best_multiplier": 0.5,
+
+    # ── Local food adjustment ─────────────────────────────────────────────────
+    # local_food_pct 0–100: each 10% local/unprocessed reduces food footprint by ~3%
+    # Max reduction capped at 25% (fully local still has some footprint)
+    "food.local_reduction_per_10pct": 0.03,
+    "food.local_max_reduction": 0.25,
+
+    # ── Trash adjustment ─────────────────────────────────────────────────────
+    # trash_vs_neighbors 0–100: 0=much less waste, 100=much more
+    # Baseline (50) = 0 adjustment. Range: -0.15 to +0.15 tCO2e/year
+    "waste.baseline_tco2e": 0.0,
+    "waste.max_delta_tco2e": 0.15,
 }
 
 

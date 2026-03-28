@@ -5,6 +5,7 @@ import { useFonts, DMSerifDisplay_400Regular, DMSerifDisplay_400Regular_Italic }
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold, DMSans_700Bold } from '@expo-google-fonts/dm-sans';
 import * as SplashScreen from 'expo-splash-screen';
 import { Colors } from '../src/theme/colors';
+import { seedMockDataIfNeeded } from '../src/lib/mockData';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,6 +18,10 @@ export default function RootLayout() {
     DMSans_600SemiBold,
     DMSans_700Bold,
   });
+
+  useEffect(() => {
+    seedMockDataIfNeeded();
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded) {
@@ -38,6 +43,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="intake" />
         <Stack.Screen name="results" />
+        <Stack.Screen name="tracker" />
       </Stack>
     </SafeAreaProvider>
   );

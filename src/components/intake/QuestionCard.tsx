@@ -60,8 +60,8 @@ export const QUESTIONS: Partial<Record<keyof HabitProfile, QuestionConfig>> = {
     question: 'How would you describe your diet?',
     type: 'options',
     options: [
-      { label: 'Omnivore', value: 'omnivore' },
-      { label: 'Flexitarian', value: 'flexitarian' },
+      { label: 'Mixed (meat & plants)', value: 'omnivore' },
+      { label: 'Mostly plant-based', value: 'flexitarian' },
       { label: 'Vegetarian', value: 'vegetarian' },
       { label: 'Vegan', value: 'vegan' },
     ],

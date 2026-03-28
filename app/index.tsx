@@ -1,9 +1,11 @@
 import { View, Text, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useEffect, useState } from 'react';
 import { Colors } from '../src/theme/colors';
 import { Fonts, FontSizes } from '../src/theme/typography';
 import { PARIS_TARGET, GLOBAL_AVG } from '../src/types/index';
+import { loadSession } from '../src/lib/storage';
 
 const STATS = [
   { value: `${GLOBAL_AVG}t`, label: 'Global Average', sublabel: 'CO₂ / year' },
@@ -13,6 +15,13 @@ const STATS = [
 export default function LandingScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const [isReturning, setIsReturning] = useState(false);
+
+  useEffect(() => {
+    loadSession().then((s) => {
+      if (s && s.footprint_result.total_tco2e > 0) setIsReturning(true);
+    });
+  }, []);
 
   return (
     <ScrollView
@@ -68,6 +77,18 @@ export default function LandingScreen() {
         <Text style={styles.ctaText}>Calculate My Footprint</Text>
         <Text style={styles.ctaArrow}>→</Text>
       </Pressable>
+
+      {isReturning && (
+        <Pressable
+          style={({ pressed }) => [styles.trackButton, pressed && styles.ctaPressed]}
+          onPress={() => router.push('/tracker')}
+          accessibilityLabel="Track Today's Habits"
+          accessibilityRole="button"
+        >
+          <Text style={styles.trackText}>Track Today's Habits</Text>
+          <Text style={styles.trackArrow}>→</Text>
+        </Pressable>
+      )}
 
       <Text style={styles.disclaimer}>
         Takes about 2 minutes · No account required
@@ -188,6 +209,28 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.sansRegular,
     fontSize: FontSizes.lg,
     color: Colors.accentLight,
+  },
+  trackButton: {
+    borderRadius: 16,
+    paddingVertical: 18,
+    paddingHorizontal: 28,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1.5,
+    borderColor: Colors.accent,
+    backgroundColor: 'transparent',
+  },
+  trackText: {
+    fontFamily: Fonts.sansSemiBold,
+    fontSize: FontSizes.md,
+    color: Colors.accent,
+    letterSpacing: 0.2,
+  },
+  trackArrow: {
+    fontFamily: Fonts.sansRegular,
+    fontSize: FontSizes.lg,
+    color: Colors.accent,
   },
   disclaimer: {
     fontFamily: Fonts.sansRegular,
