@@ -23,10 +23,11 @@ Find your local IP address:
 - macOS/Linux: `ipconfig getifaddr en0`
 - Windows: `ipconfig` → look for IPv4
 
-Create a `.env` file:
+Create a `.env` file (copy from `.env.example`):
+```bash
+cp .env.example .env
 ```
-EXPO_PUBLIC_API_URL=http://<your-local-ip>:8000
-```
+Then edit `.env` and replace `<your-local-ip>` with your actual IP.
 
 Start the backend:
 ```bash
