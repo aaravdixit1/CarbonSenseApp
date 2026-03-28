@@ -1,0 +1,70 @@
+// ── Constants ────────────────────────────────────────────────────────────────
+
+export const SCHEMA_VERSION = '1.0';
+export const STORAGE_KEY = 'carbonsense_session';
+export const MAX_SCALE = 10;      // tCO₂e — upper bound of FootprintMeter bar
+export const PARIS_TARGET = 2.3;  // tCO₂e/year
+export const GLOBAL_AVG = 4.7;    // tCO₂e/year
+
+export const STEP_KEYS: (keyof HabitProfile)[] = [
+  'transport_method',
+  'car_type',
+  'diet_type',
+  'meat_frequency',
+  'home_energy_source',
+  'household_size',
+  'shopping_frequency',
+  'flight_frequency',
+];
+
+// ── Interfaces ───────────────────────────────────────────────────────────────
+
+export interface HabitProfile {
+  transport_method: 'car' | 'transit' | 'cycling' | 'walking';
+  car_type?: 'gasoline' | 'diesel' | 'hybrid' | 'electric' | null;
+  diet_type: 'omnivore' | 'flexitarian' | 'vegetarian' | 'vegan';
+  meat_frequency: 'daily' | 'few_per_week' | 'weekly' | 'rarely';
+  home_energy_source: 'grid' | 'natural_gas' | 'renewables' | 'mixed';
+  household_size: number; // 1–10
+  shopping_frequency: 'rarely' | 'monthly' | 'weekly' | 'daily';
+  flight_frequency: 'none' | 'one_or_two' | 'several' | 'frequent';
+}
+
+export interface CategoryBreakdown {
+  category: 'food' | 'transport' | 'home_energy' | 'shopping';
+  absolute_tco2e: number;
+  percentage: number;
+  substituted: boolean;
+}
+
+export interface FootprintResult {
+  total_tco2e: number;
+  breakdown: CategoryBreakdown[];
+  db_version: string;
+  factors_used: Record<string, number>;
+}
+
+export interface Action {
+  id: string;
+  description: string;
+  savings_tco2e: number;
+  impact_label: string;
+  rank: number; // 1–3
+  composite_score: number;
+}
+
+export interface AnalyzeResponse {
+  footprint: FootprintResult;
+  actions: Action[];
+  session_id: string;
+  fallback_used: boolean;
+}
+
+export interface StoredSession {
+  schema_version: string; // must equal SCHEMA_VERSION = "1.0"
+  session_id: string;
+  habit_profile: HabitProfile;
+  footprint_result: FootprintResult;
+  actions: Action[];
+  created_at: string; // ISO 8601
+}

@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "CarbonSense",
+    "slug": "carbonsenseapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.carbonsense.app"
+    },
+    "android": {
+      "package": "com.carbonsense.app"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "carbonsense"
+  }
+}
