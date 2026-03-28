@@ -1,0 +1,4 @@
+# file: /Users/aaravdixit/CS Careers Hackathon/CarbonSenseApp/backend/schemas/goals.py
+# hypothesis_version: 6.151.9
+
+['active', 'completed', 'dismissed']

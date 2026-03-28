@@ -1,0 +1,4 @@
+# file: /Users/aaravdixit/CS Careers Hackathon/CarbonSenseApp/backend/ai_pipeline.py
+# hypothesis_version: 6.151.9
+
+[0.0, 0.2, 0.3, 0.5, 1.0, 2.3, 4.7, 10.0, 300, 800, 'OPENAI_API_KEY', '[]', 'above', 'actions', 'annual', 'beef', 'below', 'composite_score', 'content', 'cycling', 'description', 'diet', 'feasibility_score', 'flight', 'flights', 'food', 'friction_score', 'global_average', 'gpt-4o', 'id', 'impact_label', 'json_object', 'meaningful step', 'meat', 'none', 'plant', 'rank', 'rarely', 'recommendations', 'role', 'savings_tco2e', 'shopping', 'transport', 'type', 'user', 'vegan', 'walking']

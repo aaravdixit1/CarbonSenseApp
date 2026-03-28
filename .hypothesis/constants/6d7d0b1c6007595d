@@ -1,0 +1,4 @@
+# file: /Users/aaravdixit/CS Careers Hackathon/CarbonSenseApp/backend/controllers/goals.py
+# hypothesis_version: 6.151.9
+
+[201, '/goals', '/goals/{goal_id}']

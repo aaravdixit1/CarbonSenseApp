@@ -1,29 +1,34 @@
 """
 FastAPI application for CarbonSenseAI.
-
-Exposes a single POST /analyze endpoint that accepts a HabitProfile,
-computes the carbon footprint, generates recommendations, and returns
-an AnalyzeResponse.
 """
 
 from __future__ import annotations
 
 import logging
 import uuid
+from pathlib import Path
+
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).parent.parent / ".env")
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
-from backend.models import AnalyzeResponse, HabitProfile
-from backend.emissions_db import emissions_db
-from backend.footprint_engine import compute_footprint
-from backend.ai_pipeline import generate_recommendations
+from backend.controllers.profile import router as profile_router
+from backend.controllers.analyze import router as analyze_router
+from backend.controllers.results import router as results_router
+from backend.controllers.goals import router as goals_router
 
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="CarbonSenseAI")
+
+app.include_router(profile_router)
+app.include_router(analyze_router)
+app.include_router(results_router)
+app.include_router(goals_router)
 
 # CORS — allow all origins for development
 app.add_middleware(
@@ -87,31 +92,4 @@ async def request_validation_handler(request: Request, exc: RequestValidationErr
     )
 
 
-# ---------------------------------------------------------------------------
-# POST /analyze
-# ---------------------------------------------------------------------------
 
-@app.post("/analyze", response_model=AnalyzeResponse)
-async def analyze(profile: HabitProfile) -> AnalyzeResponse:
-    """Accept a HabitProfile, compute footprint and recommendations."""
-    correlation_id = str(uuid.uuid4())
-    try:
-        db_version = emissions_db.get_active_version()
-        footprint = compute_footprint(profile, db_version)
-        actions, fallback_used = await generate_recommendations(profile, footprint, db_version)
-        return AnalyzeResponse(
-            footprint=footprint,
-            actions=actions,
-            session_id=str(uuid.uuid4()),
-            fallback_used=fallback_used,
-        )
-    except Exception as exc:
-        logger.error("Internal error [%s]: %s", correlation_id, exc, exc_info=True)
-        return JSONResponse(
-            status_code=500,
-            content={
-                "error": "internal_error",
-                "message": f"An unexpected error occurred. Reference: {correlation_id}",
-                "correlation_id": correlation_id,
-            },
-        )

@@ -1,0 +1,4 @@
+# file: /Users/aaravdixit/CS Careers Hackathon/CarbonSenseApp/backend/footprint_engine.py
+# hypothesis_version: 6.151.9
+
+[0.0, 100, 'car', 'food', 'food.global_average', 'home_energy', 'shopping', 'transport']

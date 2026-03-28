@@ -1,0 +1,4 @@
+# file: /Users/aaravdixit/CS Careers Hackathon/CarbonSenseApp/backend/auth.py
+# hypothesis_version: 6.151.9
+
+[401, 'HS256', 'SUPABASE_JWT_SECRET', 'bearer', 'error', 'invalid_token', 'missing_token', 'sub']

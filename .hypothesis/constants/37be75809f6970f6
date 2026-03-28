@@ -1,0 +1,4 @@
+# file: /Users/aaravdixit/CS Careers Hackathon/CarbonSenseApp/backend/services/analyze_service.py
+# hypothesis_version: 6.151.9
+
+['actions', 'breakdown', 'composite_score', 'db_version', 'description', 'factors_used', 'fallback_used', 'footprint_results', 'impact_label', 'rank', 'savings_tco2e', 'total_tco2e', 'user_id']

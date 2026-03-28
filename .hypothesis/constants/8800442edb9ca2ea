@@ -1,0 +1,4 @@
+# file: /Users/aaravdixit/CS Careers Hackathon/CarbonSenseApp/backend/models.py
+# hypothesis_version: 6.151.9
+
+['car', 'cycling', 'daily', 'diesel', 'electric', 'few_per_week', 'flexitarian', 'food', 'frequent', 'gasoline', 'grid', 'home_energy', 'hybrid', 'mixed', 'monthly', 'natural_gas', 'none', 'omnivore', 'one_or_two', 'rarely', 'renewables', 'several', 'shopping', 'transit', 'transport', 'vegan', 'vegetarian', 'walking', 'weekly']

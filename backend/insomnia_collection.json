@@ -1,0 +1,205 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2024-01-01T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_carbonsense",
+      "_type": "workspace",
+      "name": "CarbonSense API",
+      "description": "CarbonSense Backend API collection",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_carbonsense",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8000",
+        "auth_token": ""
+      },
+      "color": null,
+      "isPrivate": false
+    },
+    {
+      "_id": "fld_analyze",
+      "_type": "request_group",
+      "parentId": "wrk_carbonsense",
+      "name": "Analyze"
+    },
+    {
+      "_id": "fld_profile",
+      "_type": "request_group",
+      "parentId": "wrk_carbonsense",
+      "name": "Profile"
+    },
+    {
+      "_id": "fld_results",
+      "_type": "request_group",
+      "parentId": "wrk_carbonsense",
+      "name": "Results"
+    },
+    {
+      "_id": "fld_goals",
+      "_type": "request_group",
+      "parentId": "wrk_carbonsense",
+      "name": "Goals"
+    },
+    {
+      "_id": "req_post_analyze",
+      "_type": "request",
+      "parentId": "fld_analyze",
+      "name": "POST /analyze",
+      "method": "POST",
+      "url": "{{ base_url }}/analyze",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"transport_method\": \"car\",\n  \"car_type\": \"gasoline\",\n  \"diet_type\": \"omnivore\",\n  \"meat_frequency\": \"daily\",\n  \"home_energy_source\": \"grid\",\n  \"household_size\": 2,\n  \"shopping_frequency\": \"weekly\",\n  \"flight_frequency\": \"none\"\n}"
+      },
+      "authentication": {},
+      "parameters": [],
+      "description": "Compute carbon footprint and get AI-generated recommendations. Requires authentication."
+    },
+    {
+      "_id": "req_put_profile",
+      "_type": "request",
+      "parentId": "fld_profile",
+      "name": "PUT /profile",
+      "method": "PUT",
+      "url": "{{ base_url }}/profile",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"transport_method\": \"car\",\n  \"car_type\": \"gasoline\",\n  \"diet_type\": \"omnivore\",\n  \"meat_frequency\": \"daily\",\n  \"home_energy_source\": \"grid\",\n  \"household_size\": 2,\n  \"shopping_frequency\": \"weekly\",\n  \"flight_frequency\": \"none\"\n}"
+      },
+      "authentication": {},
+      "parameters": [],
+      "description": "Save or update the authenticated user's habit profile."
+    },
+    {
+      "_id": "req_get_profile",
+      "_type": "request",
+      "parentId": "fld_profile",
+      "name": "GET /profile",
+      "method": "GET",
+      "url": "{{ base_url }}/profile",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ],
+      "body": {},
+      "authentication": {},
+      "parameters": [],
+      "description": "Retrieve the authenticated user's saved habit profile."
+    },
+    {
+      "_id": "req_get_results",
+      "_type": "request",
+      "parentId": "fld_results",
+      "name": "GET /results",
+      "method": "GET",
+      "url": "{{ base_url }}/results",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ],
+      "body": {},
+      "authentication": {},
+      "parameters": [],
+      "description": "Retrieve the authenticated user's most recent footprint result."
+    },
+    {
+      "_id": "req_post_goals",
+      "_type": "request",
+      "parentId": "fld_goals",
+      "name": "POST /goals",
+      "method": "POST",
+      "url": "{{ base_url }}/goals",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"action_id\": \"00000000-0000-0000-0000-000000000000\"\n}"
+      },
+      "authentication": {},
+      "parameters": [],
+      "description": "Commit to an action by creating a new goal with status='active'."
+    },
+    {
+      "_id": "req_patch_goal",
+      "_type": "request",
+      "parentId": "fld_goals",
+      "name": "PATCH /goals/{goal_id}",
+      "method": "PATCH",
+      "url": "{{ base_url }}/goals/00000000-0000-0000-0000-000000000000",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"completed\"\n}"
+      },
+      "authentication": {},
+      "parameters": [],
+      "description": "Update the status of a goal. Replace the goal_id in the URL with the actual goal UUID."
+    },
+    {
+      "_id": "req_get_goals",
+      "_type": "request",
+      "parentId": "fld_goals",
+      "name": "GET /goals",
+      "method": "GET",
+      "url": "{{ base_url }}/goals",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ auth_token }}"
+        }
+      ],
+      "body": {},
+      "authentication": {},
+      "parameters": [],
+      "description": "List all goals for the authenticated user, ordered by committed_at descending."
+    }
+  ]
+}
