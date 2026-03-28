@@ -36,6 +36,12 @@ function IntakeScreen() {
         >
           <QuestionCard />
         </ScrollView>
+
+        {/* Bottom brandmark */}
+        <View style={[styles.brandFooter, { paddingBottom: insets.bottom + 12 }]}>
+          <View style={styles.brandFooterMark} />
+          <Text style={styles.brandFooterText}>CarbonSense</Text>
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -88,5 +94,24 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 32,
+  },
+  brandFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    paddingTop: 12,
+  },
+  brandFooterMark: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    backgroundColor: Colors.accent,
+  },
+  brandFooterText: {
+    fontFamily: Fonts.sansSemiBold,
+    fontSize: FontSizes.md,
+    color: Colors.accent,
+    letterSpacing: 0.3,
   },
 });

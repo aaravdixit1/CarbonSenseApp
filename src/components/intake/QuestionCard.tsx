@@ -221,9 +221,16 @@ const Nav: FC<{
   </View>
 );
 
+const Branding: FC = () => (
+  <View style={styles.brandingRow}>
+    <View style={styles.brandingLogoMark} />
+    <Text style={styles.brandingWordmark}>CarbonSense</Text>
+  </View>
+);
+
 // ── Namespace export ──────────────────────────────────────────────────────────
 
-export const Question = { Header, Options, Nav };
+export const Question = { Header, Options, Nav, Branding };
 
 // ── QuestionCard ──────────────────────────────────────────────────────────────
 
@@ -332,5 +339,22 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.base,
     color: Colors.textInverse,
     letterSpacing: 0.2,
+  },
+  brandingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  brandingLogoMark: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    backgroundColor: Colors.accent,
+  },
+  brandingWordmark: {
+    fontFamily: Fonts.sansSemiBold,
+    fontSize: FontSizes.md,
+    color: Colors.accent,
+    letterSpacing: 0.3,
   },
 });
