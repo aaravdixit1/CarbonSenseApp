@@ -1,5 +1,6 @@
-import { Pressable, Text, StyleSheet } from 'react-native';
+import { Pressable, Text, StyleSheet, View } from 'react-native';
 import { Colors } from '../../theme/colors';
+import { Fonts, FontSizes } from '../../theme/typography';
 
 interface OptionButtonProps {
   label: string;
@@ -11,43 +12,60 @@ interface OptionButtonProps {
 export function OptionButton({ label, value, selected, onPress }: OptionButtonProps) {
   return (
     <Pressable
-      style={selected ? styles.containerSelected : styles.container}
+      style={({ pressed }) => [
+        styles.container,
+        selected && styles.containerSelected,
+        pressed && !selected && styles.containerPressed,
+      ]}
       onPress={() => onPress(value)}
       accessibilityLabel={label}
       accessibilityRole="button"
     >
-      <Text style={selected ? styles.textSelected : styles.text}>{label}</Text>
+      <View style={[styles.indicator, selected && styles.indicatorSelected]} />
+      <Text style={[styles.text, selected && styles.textSelected]}>{label}</Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 12,
-    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    borderRadius: 14,
+    borderWidth: 1.5,
     borderColor: Colors.border,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginBottom: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    marginBottom: 10,
     backgroundColor: Colors.card,
   },
   containerSelected: {
-    borderRadius: 12,
-    borderWidth: 1,
     borderColor: Colors.accent,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginBottom: 8,
+    backgroundColor: Colors.accentLight,
+  },
+  containerPressed: {
+    backgroundColor: Colors.background,
+  },
+  indicator: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 1.5,
+    borderColor: Colors.borderStrong,
+    backgroundColor: 'transparent',
+  },
+  indicatorSelected: {
+    borderColor: Colors.accent,
     backgroundColor: Colors.accent,
   },
   text: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontFamily: Fonts.sansMedium,
+    fontSize: FontSizes.base,
     color: Colors.textPrimary,
   },
   textSelected: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#FFFFFF',
+    fontFamily: Fonts.sansSemiBold,
+    color: Colors.accent,
   },
 });

@@ -36,7 +36,7 @@ interface IntakeContextValue {
  */
 export function getVisibleSteps(answers: Partial<HabitProfile>): (keyof HabitProfile)[] {
   return STEP_KEYS.filter(
-    (key) => key !== 'car_type' || answers.transport_method === 'car'
+    (key) => !['car_type', 'weekly_km', 'fuel_economy'].includes(key) || answers.transport_method === 'car'
   );
 }
 

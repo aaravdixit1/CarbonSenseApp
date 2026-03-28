@@ -2,8 +2,12 @@ import { FC, ReactNode } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { HabitProfile } from '../../types/index';
 import { Colors } from '../../theme/colors';
+import { Fonts, FontSizes } from '../../theme/typography';
 import { OptionButton } from './OptionButton';
 import { HouseholdStepper } from './HouseholdStepper';
+import { PercentageSlider } from './PercentageSlider';
+import { WeeklyKmSlider } from './WeeklyKmSlider';
+import { ScaleSlider } from './ScaleSlider';
 import { useIntake, getVisibleSteps } from './IntakeContext';
 
 // ── Question Config ───────────────────────────────────────────────────────────
@@ -15,8 +19,10 @@ interface OptionConfig {
 
 export interface QuestionConfig {
   question: string;
-  type: 'options' | 'stepper';
+  type: 'options' | 'stepper' | 'percentage' | 'weekly_km' | 'scale';
   options?: OptionConfig[];
+  scaleMin?: string;
+  scaleMax?: string;
 }
 
 export const QUESTIONS: Partial<Record<keyof HabitProfile, QuestionConfig>> = {
@@ -40,6 +46,16 @@ export const QUESTIONS: Partial<Record<keyof HabitProfile, QuestionConfig>> = {
       { label: 'Electric', value: 'electric' },
     ],
   },
+  weekly_km: {
+    question: 'How far do you travel by car or motorcycle each week?',
+    type: 'weekly_km',
+  },
+  fuel_economy: {
+    question: 'What is the average fuel economy of the vehicles you use most often?',
+    type: 'scale',
+    scaleMin: 'Inefficient',
+    scaleMax: 'Efficient or Electric',
+  },
   diet_type: {
     question: 'How would you describe your diet?',
     type: 'options',
@@ -60,6 +76,10 @@ export const QUESTIONS: Partial<Record<keyof HabitProfile, QuestionConfig>> = {
       { label: 'Rarely', value: 'rarely' },
     ],
   },
+  local_food_pct: {
+    question: 'How much of the food that you eat is unprocessed, unpackaged or locally grown?',
+    type: 'percentage',
+  },
   home_energy_source: {
     question: 'What powers your home?',
     type: 'options',
@@ -73,6 +93,12 @@ export const QUESTIONS: Partial<Record<keyof HabitProfile, QuestionConfig>> = {
   household_size: {
     question: 'How many people live in your household?',
     type: 'stepper',
+  },
+  trash_vs_neighbors: {
+    question: 'Compared to your neighbors, how much trash do you generate?',
+    type: 'scale',
+    scaleMin: 'Much Less',
+    scaleMax: 'Much More',
   },
   shopping_frequency: {
     question: 'How often do you buy new clothes or goods?',
@@ -118,6 +144,35 @@ const Options: FC<{
       <HouseholdStepper
         value={value as number | undefined}
         onPress={onChange}
+      />
+    );
+  }
+
+  if (config.type === 'percentage') {
+    return (
+      <PercentageSlider
+        value={value as number | undefined}
+        onChange={onChange}
+      />
+    );
+  }
+
+  if (config.type === 'weekly_km') {
+    return (
+      <WeeklyKmSlider
+        value={value as number | undefined}
+        onChange={onChange}
+      />
+    );
+  }
+
+  if (config.type === 'scale') {
+    return (
+      <ScaleSlider
+        value={value as number | undefined}
+        onChange={onChange}
+        minLabel={config.scaleMin ?? ''}
+        maxLabel={config.scaleMax ?? ''}
       />
     );
   }
@@ -214,28 +269,34 @@ export const QuestionCard: FC = () => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: Colors.card,
-    borderRadius: 16,
-    padding: 20,
-    gap: 20,
+    borderRadius: 24,
+    padding: 28,
+    gap: 28,
+    shadowColor: Colors.textPrimary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 3,
   },
   headerContainer: {
-    gap: 8,
+    gap: 10,
   },
   stepLabel: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: Colors.textMuted,
+    fontFamily: Fonts.sansMedium,
+    fontSize: FontSizes.xs,
+    color: Colors.accentMid,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 1.4,
   },
   questionText: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontFamily: Fonts.displayRegular,
+    fontSize: 26,
     color: Colors.textPrimary,
-    lineHeight: 28,
+    lineHeight: 34,
+    letterSpacing: -0.2,
   },
   optionsContainer: {
-    gap: 4,
+    gap: 0,
   },
   navContainer: {
     flexDirection: 'row',
@@ -244,31 +305,32 @@ const styles = StyleSheet.create({
   },
   backButton: {
     flex: 1,
-    borderRadius: 12,
-    borderWidth: 1,
+    borderRadius: 14,
+    borderWidth: 1.5,
     borderColor: Colors.border,
-    paddingVertical: 14,
+    paddingVertical: 15,
     alignItems: 'center',
-    backgroundColor: Colors.card,
+    backgroundColor: 'transparent',
   },
   backButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.textSecondary,
+    fontFamily: Fonts.sansMedium,
+    fontSize: FontSizes.base,
+    color: Colors.textMuted,
   },
   nextButton: {
     flex: 2,
-    borderRadius: 12,
-    paddingVertical: 14,
+    borderRadius: 14,
+    paddingVertical: 15,
     alignItems: 'center',
     backgroundColor: Colors.accent,
   },
   nextButtonDisabled: {
-    opacity: 0.5,
+    opacity: 0.35,
   },
   nextButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    fontFamily: Fonts.sansSemiBold,
+    fontSize: FontSizes.base,
+    color: Colors.textInverse,
+    letterSpacing: 0.2,
   },
 });

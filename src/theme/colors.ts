@@ -1,22 +1,36 @@
 export const Colors = {
-  background: '#F5F0E8',
-  card: '#FFFDF7',
-  accent: '#2D5016',
-  textPrimary: '#1A1A1A',
-  textSecondary: '#4A4A4A',
-  textMuted: '#8A8A8A',
-  border: '#E0D8C8',
-  // Footprint meter
-  green: '#4ade80',
-  yellow: '#facc15',
-  red: '#f87171',
-  // Category colors
-  food: '#86efac',
-  transport: '#93c5fd',
-  homeEnergy: '#fde68a',
-  shopping: '#d8b4fe',
-  // Action rank colors
-  rank1: '#4ade80',
-  rank2: '#60a5fa',
-  rank3: '#c084fc',
+  // Core palette — warm parchment + deep forest
+  background: '#F2EDE4',
+  card: '#FAF7F2',
+  cardAlt: '#FFFFFF',
+  accent: '#1E3D0F',        // deep forest green
+  accentMid: '#3A6B1A',     // mid green
+  accentLight: '#D4E8C2',   // soft sage tint
+  accentGlow: '#8BBF5A',    // bright leaf
+
+  // Text
+  textPrimary: '#141410',
+  textSecondary: '#3D3B35',
+  textMuted: '#9A9488',
+  textInverse: '#FAF7F2',
+
+  // Borders
+  border: '#DDD7CC',
+  borderStrong: '#B8B0A2',
+
+  // Semantic
+  green: '#5CB85C',
+  yellow: '#E8B84B',
+  red: '#D9534F',
+
+  // Category chips
+  food: '#A8D5A2',
+  transport: '#A2C4D5',
+  homeEnergy: '#E8D5A2',
+  shopping: '#D5A2C4',
+
+  // Rank
+  rank1: '#5CB85C',
+  rank2: '#5B9BD5',
+  rank3: '#B85CB8',
 } as const;

@@ -3,41 +3,36 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IntakeProvider, useIntake } from '../src/components/intake/IntakeContext';
 import { QuestionCard } from '../src/components/intake/QuestionCard';
 import { Colors } from '../src/theme/colors';
-
-// ── Inner screen (must be inside IntakeProvider to use useIntake) ─────────────
+import { Fonts, FontSizes } from '../src/theme/typography';
 
 function IntakeScreen() {
   const { currentStep, totalSteps } = useIntake();
   const insets = useSafeAreaInsets();
-
-  const progressWidth = `${((currentStep + 1) / totalSteps) * 100}%` as const;
+  const progress = (currentStep + 1) / totalSteps;
 
   return (
     <KeyboardAvoidingView
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View
-        style={[
-          styles.container,
-          { paddingTop: insets.top, paddingBottom: insets.bottom },
-        ]}
-      >
-        {/* Progress bar */}
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressFill, { width: progressWidth }]} />
+      <View style={[styles.container, { paddingTop: insets.top + 16, paddingBottom: insets.bottom }]}>
+        {/* Top bar */}
+        <View style={styles.topBar}>
+          <Text style={styles.brandMark}>CS</Text>
+          <Text style={styles.stepCounter}>{currentStep + 1} of {totalSteps}</Text>
         </View>
 
-        {/* Step counter */}
-        <Text style={styles.stepCounter}>
-          {currentStep + 1} / {totalSteps}
-        </Text>
+        {/* Progress track */}
+        <View style={styles.progressTrack}>
+          <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
+        </View>
 
-        {/* Question card */}
+        {/* Question */}
         <ScrollView
           style={styles.flex}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
           <QuestionCard />
         </ScrollView>
@@ -45,8 +40,6 @@ function IntakeScreen() {
     </KeyboardAvoidingView>
   );
 }
-
-// ── Default export wrapped in IntakeProvider ──────────────────────────────────
 
 export default function IntakePage() {
   return (
@@ -56,37 +49,44 @@ export default function IntakePage() {
   );
 }
 
-// ── Styles ────────────────────────────────────────────────────────────────────
-
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
+  flex: { flex: 1 },
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
+  },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  brandMark: {
+    fontFamily: Fonts.sansBold,
+    fontSize: FontSizes.sm,
+    color: Colors.accent,
+    letterSpacing: 1.5,
+  },
+  stepCounter: {
+    fontFamily: Fonts.sansMedium,
+    fontSize: FontSizes.sm,
+    color: Colors.textMuted,
+    letterSpacing: 0.3,
   },
   progressTrack: {
-    height: 4,
+    height: 3,
     borderRadius: 2,
     backgroundColor: Colors.border,
-    marginTop: 12,
-    marginBottom: 8,
+    marginBottom: 28,
     overflow: 'hidden',
   },
   progressFill: {
-    height: 4,
+    height: 3,
     borderRadius: 2,
     backgroundColor: Colors.accent,
   },
-  stepCounter: {
-    fontSize: 13,
-    color: Colors.textMuted,
-    textAlign: 'right',
-    marginBottom: 16,
-  },
   scrollContent: {
-    paddingBottom: 24,
+    paddingBottom: 32,
   },
 });

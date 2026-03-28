@@ -9,10 +9,14 @@ export const GLOBAL_AVG = 4.7;    // tCO₂e/year
 export const STEP_KEYS: (keyof HabitProfile)[] = [
   'transport_method',
   'car_type',
+  'weekly_km',
+  'fuel_economy',
   'diet_type',
   'meat_frequency',
+  'local_food_pct',
   'home_energy_source',
   'household_size',
+  'trash_vs_neighbors',
   'shopping_frequency',
   'flight_frequency',
 ];
@@ -22,10 +26,14 @@ export const STEP_KEYS: (keyof HabitProfile)[] = [
 export interface HabitProfile {
   transport_method: 'car' | 'transit' | 'cycling' | 'walking';
   car_type?: 'gasoline' | 'diesel' | 'hybrid' | 'electric' | null;
+  weekly_km: number;        // 0–500+
+  fuel_economy: number;     // 0–100 (0 = inefficient, 100 = efficient/electric)
   diet_type: 'omnivore' | 'flexitarian' | 'vegetarian' | 'vegan';
   meat_frequency: 'daily' | 'few_per_week' | 'weekly' | 'rarely';
+  local_food_pct: number;   // 0–100
   home_energy_source: 'grid' | 'natural_gas' | 'renewables' | 'mixed';
-  household_size: number; // 1–10
+  household_size: number;   // 1–10
+  trash_vs_neighbors: number; // 0–100 (0 = much less, 100 = much more)
   shopping_frequency: 'rarely' | 'monthly' | 'weekly' | 'daily';
   flight_frequency: 'none' | 'one_or_two' | 'several' | 'frequent';
 }
