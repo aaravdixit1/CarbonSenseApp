@@ -27,7 +27,16 @@ interface IntakeContextValue {
   complete: () => Promise<void>;
 }
 
-// ── Pure function ─────────────────────────────────────────────────────────────
+import { QUESTIONS } from './QuestionCard';
+
+// Default values for slider questions when user skips without touching
+const SLIDER_DEFAULTS: Partial<Record<keyof HabitProfile, number>> = {
+  local_food_pct: 0,
+  weekly_km: 0,
+  fuel_economy: 50,
+  trash_vs_neighbors: 50,
+  household_size: 1,
+};
 
 /**
  * Returns the filtered list of visible step keys.
@@ -98,6 +107,12 @@ export const IntakeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const advance = () => {
+    // If the current slider question was never touched, seed its default
+    const visibleSteps = getVisibleSteps(state.answers);
+    const currentKey = visibleSteps[state.currentStep];
+    if (currentKey && state.answers[currentKey] === undefined && SLIDER_DEFAULTS[currentKey] !== undefined) {
+      dispatch({ type: 'SET_ANSWER', key: currentKey, value: SLIDER_DEFAULTS[currentKey] });
+    }
     dispatch({ type: 'ADVANCE' });
   };
 
