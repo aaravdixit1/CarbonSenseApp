@@ -47,13 +47,14 @@ function computeLocalEstimate(stored: StoredSession): StoredSession {
   const shopping = Math.max(0, (shopBase[p.shopping_frequency] ?? 0.7) + wasteDelta)
 
   const total = food + transport + home + shopping
-  const pct = (v: number) => total > 0 ? Math.round((v / total) * 1000) / 10 : 0
+  const safeTotal = isFinite(total) && !isNaN(total) && total > 0 ? total : 0.01
+  const pct = (v: number) => Math.round((v / safeTotal) * 1000) / 10
 
   return {
     ...stored,
     session_id: 'local-estimate',
     footprint_result: {
-      total_tco2e: Math.round(total * 100) / 100,
+      total_tco2e: Math.round(safeTotal * 100) / 100,
       breakdown: [
         { category: 'food', absolute_tco2e: Math.round(food * 100) / 100, percentage: pct(food), substituted: false },
         { category: 'transport', absolute_tco2e: Math.round(transport * 100) / 100, percentage: pct(transport), substituted: false },
@@ -267,9 +268,12 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   headerTitle: {
-    fontSize: 22,
+    flex: 1,
+    fontSize: 17,
     fontWeight: '700',
     color: Colors.textPrimary,
+    flexShrink: 1,
+    marginRight: 8,
   },
   retakeButton: {
     paddingHorizontal: 14,

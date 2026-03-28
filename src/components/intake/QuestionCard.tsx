@@ -244,7 +244,8 @@ export const QuestionCard: FC = () => {
   if (!config) return null;
 
   const currentValue = answers[stepKey];
-  const hasAnswer = currentValue !== undefined && currentValue !== null;
+  const isSlider = config.type === 'percentage' || config.type === 'weekly_km' || config.type === 'scale' || config.type === 'stepper';
+  const hasAnswer = isSlider ? true : Boolean(currentValue);
   const isLast = currentStep === totalSteps - 1;
   const canGoBack = currentStep > 0;
 

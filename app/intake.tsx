@@ -4,6 +4,7 @@ import { IntakeProvider, useIntake } from '../src/components/intake/IntakeContex
 import { QuestionCard } from '../src/components/intake/QuestionCard';
 import { Colors } from '../src/theme/colors';
 import { Fonts, FontSizes } from '../src/theme/typography';
+import { Logo } from '../src/components/Logo';
 
 function IntakeScreen() {
   const { currentStep, totalSteps } = useIntake();
@@ -18,7 +19,7 @@ function IntakeScreen() {
       <View style={[styles.container, { paddingTop: insets.top + 16, paddingBottom: insets.bottom }]}>
         {/* Top bar */}
         <View style={styles.topBar}>
-          <Text style={styles.brandMark}>CS</Text>
+          <Logo size={28} />
           <Text style={styles.stepCounter}>{currentStep + 1} of {totalSteps}</Text>
         </View>
 

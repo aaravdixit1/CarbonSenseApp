@@ -32,15 +32,16 @@ const PARIS_MARKER_PCT = (PARIS_TARGET / MAX_SCALE) * 100;
 const GLOBAL_MARKER_PCT = (GLOBAL_AVG / MAX_SCALE) * 100;
 
 export default function FootprintMeter({ totalTco2e }: FootprintMeterProps) {
-  const accentColor = getAccentColor(totalTco2e);
-  const fillPercent = toPercent(totalTco2e);
+  const safe = isFinite(totalTco2e) && !isNaN(totalTco2e) ? totalTco2e : 0;
+  const accentColor = getAccentColor(safe);
+  const fillPercent = toPercent(safe);
 
   return (
     <View style={styles.container}>
       <Text style={[styles.totalValue, { color: accentColor }]}>
-        {totalTco2e.toFixed(1)} tCO₂e / year
+        {safe.toFixed(1)} tCO₂e / year
       </Text>
-      <Text style={styles.label}>{getLabel(totalTco2e)}</Text>
+      <Text style={styles.label}>{getLabel(safe)}</Text>
 
       <View style={styles.barContainer}>
         {/* Fill */}

@@ -6,6 +6,7 @@ import { Colors } from '../src/theme/colors';
 import { Fonts, FontSizes } from '../src/theme/typography';
 import { PARIS_TARGET, GLOBAL_AVG } from '../src/types/index';
 import { loadSession } from '../src/lib/storage';
+import { Logo } from '../src/components/Logo';
 
 const STATS = [
   { value: `${GLOBAL_AVG}t`, label: 'Global Average', sublabel: 'CO₂ / year' },
@@ -34,7 +35,7 @@ export default function LandingScreen() {
     >
       {/* Wordmark */}
       <View style={styles.wordmarkRow}>
-        <View style={styles.logoMark} />
+        <Logo size={32} />
         <Text style={styles.appName}>CarbonSense</Text>
       </View>
 
@@ -111,12 +112,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-  },
-  logoMark: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    backgroundColor: Colors.accent,
   },
   appName: {
     fontFamily: Fonts.sansSemiBold,
